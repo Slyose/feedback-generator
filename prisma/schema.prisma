@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Figma document for this schema
+// https://www.figma.com/file/wWDL1TdSugHFEBUK2jNN9V/Feedback-Generator-Db-schema?type=whiteboard&node-id=0-1&t=8ybvqNJz5tPnv4zm-0
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model SprintCategory {
+  id String @id @default(uuid())
+  categoryName String
+  sprints       Sprint[]
+}
+
+model Sprint {
+  id String @id @default(uuid())
+  sprintName String
+  categoryID String
+  category SprintCategory @relation(fields: [categoryID], references: [id])
+  tasks Task[]
+}
+
+model Task {
+  id String @id @default(uuid())
+  sprintID String
+  sprint Sprint @relation(fields: [sprintID], references: [id], onDelete: Cascade) 
+  aspects Aspect[]
+}
+
+model Aspect {
+  id String @id @default(uuid())
+  taskID String
+  task Task @relation(fields: [taskID], references: [id], onDelete: Cascade)
+  description String @db.VarChar(200)
+  importance Importance
+  feedbacks Feedback[]
+}
+
+enum Importance {
+  must
+  should
+  could
+}
+
+model Feedback {
+  id String @id @default(uuid())
+  userID String @db.VarChar(128)
+  aspectID String @db.VarChar(128)
+  aspect Aspect @relation(fields: [aspectID], references: [id], onDelete: Cascade)
+  whatWentWell String
+  evenBetterIf String
+  public Boolean
+}
