@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+It uses [Prisma ORM](https://www.prisma.io/) for database interactions, and [tRPC](https://trpc.io/) to provide an end-to-end typesafe API.
+
 ## Getting Started
 
 First, run the development server:
