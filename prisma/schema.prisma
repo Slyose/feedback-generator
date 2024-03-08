@@ -22,6 +22,8 @@ model SprintCategory {
 model Sprint {
   id String @id @default(uuid())
   sprintName String
+  repoLink String
+  lmsLink String
   categoryID String
   category SprintCategory @relation(fields: [categoryID], references: [id])
   tasks Task[]
@@ -29,6 +31,9 @@ model Sprint {
 
 model Task {
   id String @id @default(uuid())
+  taskName String
+  taskNumber Int
+  advanced Boolean @default(false)
   sprintID String
   sprint Sprint @relation(fields: [sprintID], references: [id], onDelete: Cascade) 
   aspects Aspect[]
